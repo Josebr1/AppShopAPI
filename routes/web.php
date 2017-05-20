@@ -22,3 +22,12 @@ $app->group(['prefix' => 'user'], function () use ($app){
     $app->put('/{id}', 'UserController@updateUser');
     $app->delete('/{id}', 'UserController@deleteUser');
 });
+
+$app->group(['prefix' => 'category'], function () use ($app){
+    $app->get('/', 'CategoryController@get');
+    $app->get('/{id}', 'CategoryController@getById');
+    $app->get('/name/{name}', 'CategoryController@getByName');
+    $app->post('/', 'CategoryController@insert');
+    $app->put('/{id}', 'CategoryController@update');
+    $app->delete('/{id}', 'CategoryController@delete');
+});
