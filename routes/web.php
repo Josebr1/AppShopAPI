@@ -41,3 +41,12 @@ $app->group(['prefix' => 'product'], function () use ($app){
     $app->put('/{id}', 'ProductController@update');
     $app->delete('/{id}', 'ProductController@delete');
 });
+
+$app->group(['prefix' => 'commentary'], function () use ($app){
+    $app->get('/', 'CommentaryController@get');
+    $app->get('/product/{id}', 'CommentaryController@getByProduct');
+    $app->get('/{id}', 'CommentaryController@getById');
+    $app->post('/', 'CommentaryController@insert');
+    $app->put('/{id}', 'CommentaryController@update');
+    $app->delete('/{id}', 'CommentaryController@delete');
+});
