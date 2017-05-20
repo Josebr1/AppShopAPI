@@ -50,3 +50,13 @@ $app->group(['prefix' => 'commentary'], function () use ($app){
     $app->put('/{id}', 'CommentaryController@update');
     $app->delete('/{id}', 'CommentaryController@delete');
 });
+
+$app->group(['prefix' => 'order'], function () use ($app){
+    $app->get('/', 'OrderController@get');
+    $app->get('/{id}', 'OrderController@getById');
+    $app->get('/products/{id}', 'OrderController@getAllProducts');
+    $app->post('/', 'OrderController@insert');
+    $app->put('/status/{id}', 'OrderController@updateStatus');
+    $app->put('/address/{id}', 'OrderController@updateAddress');
+    $app->delete('/{id}', 'OrderController@delete');
+});
