@@ -31,3 +31,13 @@ $app->group(['prefix' => 'category'], function () use ($app){
     $app->put('/{id}', 'CategoryController@update');
     $app->delete('/{id}', 'CategoryController@delete');
 });
+
+$app->group(['prefix' => 'product'], function () use ($app){
+    $app->get('/', 'ProductController@get');
+    $app->get('/{id}', 'ProductController@getById');
+    $app->get('/category/{id}', 'ProductController@getByIdCategory');
+    $app->get('/name/{name}', 'ProductController@getByName');
+    $app->post('/', 'ProductController@insert');
+    $app->put('/{id}', 'ProductController@update');
+    $app->delete('/{id}', 'ProductController@delete');
+});
