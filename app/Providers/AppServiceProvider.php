@@ -13,6 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        /**
+         * Configuraçoes iniciais do pagseguro
+         */
+        \PagSeguroLibrary::init();
+        \PagSeguroConfig::init();
+        \PagSeguroResources::init();
     }
 }

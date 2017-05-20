@@ -60,3 +60,7 @@ $app->group(['prefix' => 'order'], function () use ($app){
     $app->put('/address/{id}', 'OrderController@updateAddress');
     $app->delete('/{id}', 'OrderController@delete');
 });
+
+$app->group(['prefix' => 'payment'], function () use ($app){
+    $app->get('/session', 'PagSeguroController@getSessionId');
+});
