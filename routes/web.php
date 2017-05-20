@@ -14,3 +14,11 @@
 $app->get('/', function () use ($app) {
     return $app->version();
 });
+
+$app->group(['prefix' => 'user'], function () use ($app){
+    $app->get('/', 'UserController@get');
+    $app->get('/{id}', 'UserController@getById');
+    $app->post('/', 'UserController@addUser');
+    $app->put('/{id}', 'UserController@updateUser');
+    $app->delete('/{id}', 'UserController@deleteUser');
+});
