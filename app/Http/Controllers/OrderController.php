@@ -35,7 +35,7 @@ class OrderController extends Controller
                                     product.name,
                                     product.id_product
                                     from order_items 
-                                    left join order_user on order_items.id_order_items = order_user.id_order
+                                    left join order_user on order_items.order_id = order_user.id_order
                                     inner join product on order_items.product_id = product.id_product 
                                     where order_user.id_order = :id', ['id' => $id]);
         if ($result != null) {
@@ -50,13 +50,12 @@ class OrderController extends Controller
         try {
             $description_order = $request->input('description_order');
             $address = $request->input('address');
-            $status = $request->input('status');
+            $status = "Pedido realizado";
             $form_payment = $request->input('form_payment');
-            $token_payment = $request->input('token_payment');
             $user_id = $request->input('user_id');
 
-            $resultID = DB::insert('insert into order_user (description_order, address, status, form_payment, token_payment, user_id) values (?, ?, ?, ?, ?, ?)',
-                [$description_order, $address, $status, $form_payment, $token_payment, $user_id]);
+            $resultID = DB::insert('insert into order_user (description_order, address, status, form_payment, user_id) values (?, ?, ?, ?, ?)',
+                [$description_order, $address, $status, $form_payment, $user_id]);
 
             if ($resultID) {
                 $rowId = DB::connection()->getPdo()->lastInsertId();
@@ -65,7 +64,7 @@ class OrderController extends Controller
 
                 foreach ($items as $key => $item) {
                     $quantity = $item['quantity'];
-                    $id_product = $item['id_product'];
+                    $id_product = $item['product_id'];
 
                     DB::insert('insert into order_items (quantity, order_id, product_id) values (?, ?, ?)',
                         [$quantity, $rowId, $id_product]);
