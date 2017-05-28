@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "64be818455b2fa8cb82914b0dd020007",
+    "content-hash": "7c954a3a853f74824413c9401bde83a5",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -1435,6 +1435,57 @@
                 "routing"
             ],
             "time": "2017-01-19T11:35:12+00:00"
+        },
+        {
+            "name": "pagarme/pagarme-php",
+            "version": "v2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pagarme/pagarme-php.git",
+                "reference": "cb19025c63fb526ad137c6c4ff6fa2c33224b2e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pagarme/pagarme-php/zipball/cb19025c63fb526ad137c6c4ff6fa2c33224b2e2",
+                "reference": "cb19025c63fb526ad137c6c4ff6fa2c33224b2e2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">5.3"
+            },
+            "require-dev": {
+                "simpletest/simpletest": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/Pagarme"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pagar.me and contributors",
+                    "homepage": "https://github.com/pagarme/pagarme-php/graphs/contributors"
+                }
+            ],
+            "description": "Pagar.me PHP Library",
+            "homepage": "http://pagar.me",
+            "keywords": [
+                "api",
+                "pagamento brasil",
+                "pagamentos",
+                "pagar.me",
+                "pagarme",
+                "payments brazil"
+            ],
+            "time": "2016-06-29T04:06:22+00:00"
         },
         {
             "name": "pagseguro/php",

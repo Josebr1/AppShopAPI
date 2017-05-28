@@ -9,7 +9,8 @@
         "laravel/lumen-framework": "5.4.*",
         "vlucas/phpdotenv": "~2.2",
         "pagseguro/php": "2.7.1",
-        "palanik/lumen-cors": "dev-master"
+        "palanik/lumen-cors": "dev-master",
+        "pagarme/pagarme-php": "v2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

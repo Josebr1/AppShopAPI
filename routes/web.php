@@ -62,5 +62,5 @@ $app->group(['prefix' => 'order'], function () use ($app){
 });
 
 $app->group(['prefix' => 'payment'], function () use ($app){
-    $app->get('/session', 'PagSeguroController@getSessionId');
+    $app->post('/', 'PagarMeController@index');
 });
