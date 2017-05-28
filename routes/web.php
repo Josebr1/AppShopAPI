@@ -55,6 +55,7 @@ $app->group(['prefix' => 'order'], function () use ($app){
     $app->get('/', 'OrderController@get');
     $app->get('/{id}', 'OrderController@getById');
     $app->get('/products/{id}', 'OrderController@getAllProducts');
+    $app->get('/products/orders/{id}', 'OrderController@getAllProductsOrder');
     $app->post('/', 'OrderController@insert');
     $app->put('/status/{id}', 'OrderController@updateStatus');
     $app->put('/address/{id}', 'OrderController@updateAddress');

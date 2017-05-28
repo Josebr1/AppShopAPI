@@ -45,6 +45,24 @@ class OrderController extends Controller
         }
     }
 
+    public function getAllProductsOrder($id)
+    {
+        $result = DB::select('select 
+                                        user.name,
+                                        order_user.description_order,
+                                        order_user.address, 
+                                        order_user.status 
+                                        from 
+                                        user, order_user where
+                                        user.id_user = :idUser and order_user.user_id = :id 
+                                        order by date_order desc limit 5', ['idUser' => $id, 'id' => $id]);
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
     public function insert(Request $request)
     {
         try {
