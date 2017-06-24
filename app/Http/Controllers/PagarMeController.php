@@ -35,7 +35,7 @@ class PagarMeController extends Controller
             try {
                 $description_order = $request->input('description_order');
                 $address = $request->input('address');
-                $status = "Pedido realizado";
+                $status = "Pedido Realizado";
                 $form_payment = $request->input('form_payment');
                 $user_id = $request->input('user_id');
 

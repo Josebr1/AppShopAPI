@@ -28,12 +28,80 @@ class OrderController extends Controller
         }
     }
 
+    public function getAllUsersFormPayment($id)
+    {
+        $result = app('db')->select('select * from order_user where form_payment = :id and status = \'Pedido Realizado\' ORDER BY date_order DESC', ['id' => $id]);
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
+    public function getAllSales($id)
+    {
+        $result = null;
+        if($id == 1){
+            $result = app('db')->select('select * from order_user where status = \'Pedido Realizado\' ORDER BY date_order DESC');
+        }elseif ($id == 2){
+            $result = app('db')->select('select * from order_user where status = \'Pedido Cancelado\' ORDER BY date_order DESC');
+        }elseif ($id == 3){
+            $result = app('db')->select('select * from order_user where status = \'Pedido saiu para entrega\' ORDER BY date_order DESC');
+        }elseif ($id == 4){
+            $result = app('db')->select('select * from order_user where status = \'Pedido Finalizado\' ORDER BY date_order DESC');
+        }
+
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
+    public function getUserTopSales()
+    {
+        $result = app('db')->select('select 
+                                COUNT(user.id_user),
+                                user.name,
+                                user.email,
+                                user.phone
+                                from 
+                                user, order_user order by count(user.id_user)');
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
+    public function getAllMonth()
+    {
+        $result = app('db')->select('select count(id_order) as count from order_user where month(date_order) = month(now())');
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
+    public function getAllDay()
+    {
+        $result = app('db')->select('select count(id_order) as count from order_user where day(date_order) = day(now())');
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
     public function getAllProducts($id)
     {
         $result = app('db')->select('select 
                                     order_items.quantity,
                                     product.name,
-                                    product.id_product
+                                    product.product_image,
+                                    product.id_product,
+                                    product.price
                                     from order_items 
                                     left join order_user on order_items.order_id = order_user.id_order
                                     inner join product on order_items.product_id = product.id_product 
@@ -68,7 +136,7 @@ class OrderController extends Controller
         try {
             $description_order = $request->input('description_order');
             $address = $request->input('address');
-            $status = "Pedido realizado";
+            $status = "Pedido Realizado";
             $form_payment = $request->input('form_payment');
             $user_id = $request->input('user_id');
 
@@ -99,9 +167,13 @@ class OrderController extends Controller
         try {
             $status = $request->input('status');
 
-            DB::update('update order_user set status=? WHERE id_order=?', [$status, $id]);
+            if($request != null){
+                DB::update('update order_user set status=? WHERE id_order=?', [$status, $id]);
 
-            return response()->json("Status atualizada com sucesso!", 200);
+                return response()->json("Status atualizada com sucesso!(" . $status  . ')' , 200);
+            }else{
+            return response()->json("Not foud(" . $status  . ')' , 404);
+            }
         } catch (\Exception $e) {
             return response()->json("Error internal serve" . $e, 500);
         }

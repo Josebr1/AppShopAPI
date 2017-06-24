@@ -28,7 +28,7 @@ $app->group(['prefix' => 'category'], function () use ($app){
     $app->get('/{id}', 'CategoryController@getById');
     $app->get('/name/{name}', 'CategoryController@getByName');
     $app->post('/', 'CategoryController@insert');
-    $app->put('/{id}', 'CategoryController@update');
+    $app->post('/update/{id}', 'CategoryController@update');
     $app->delete('/{id}', 'CategoryController@delete');
 });
 
@@ -38,7 +38,7 @@ $app->group(['prefix' => 'product'], function () use ($app){
     $app->get('/category/{id}', 'ProductController@getByIdCategory');
     $app->get('/name/{name}', 'ProductController@getByName');
     $app->post('/', 'ProductController@insert');
-    $app->put('/{id}', 'ProductController@update');
+    $app->post('/update/{id}', 'ProductController@update');
     $app->delete('/{id}', 'ProductController@delete');
 });
 
@@ -55,9 +55,14 @@ $app->group(['prefix' => 'order'], function () use ($app){
     $app->get('/', 'OrderController@get');
     $app->get('/{id}', 'OrderController@getById');
     $app->get('/products/{id}', 'OrderController@getAllProducts');
+    $app->get('/orders/form/{id}', 'OrderController@getAllUsersFormPayment');
+    $app->get('/orders/status/{id}', 'OrderController@getAllSales');
+    $app->get('/user/top/sales', 'OrderController@getUserTopSales');
+    $app->get('/sale/month', 'OrderController@getAllMonth');
+    $app->get('/sale/day', 'OrderController@getAllDay');
     $app->get('/products/orders/{id}', 'OrderController@getAllProductsOrder');
     $app->post('/', 'OrderController@insert');
-    $app->put('/status/{id}', 'OrderController@updateStatus');
+    $app->post('/status/{id}', 'OrderController@updateStatus');
     $app->put('/address/{id}', 'OrderController@updateAddress');
     $app->delete('/{id}', 'OrderController@delete');
 });

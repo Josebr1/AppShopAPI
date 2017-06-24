@@ -73,8 +73,12 @@ class ProductController extends Controller
             $price = $request->input('price');
             $product_image = $request->input('product_image');
 
-            DB::update('update product set name=?, description=?, price=?, product_image=?  WHERE id_product=?', [$name, $description, $price, $product_image, $id]);
-
+            if($product_image != null){
+                DB::update('update product set name=?, description=?, price=?, product_image=?  WHERE id_product=?', [$name, $description, $price, $product_image, $id]);
+            }else{
+                DB::update('update product set name=?, description=?, price=?  WHERE id_product=?', [$name, $description, $price, $id]);
+            }
+            
             return response()->json("Produto atualizado com sucesso!", 200);
         } catch (\Exception $e) {
             return response()->json("Erro ao atualizar produto." . $e, 500);

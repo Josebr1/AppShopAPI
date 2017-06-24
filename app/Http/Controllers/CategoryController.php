@@ -56,7 +56,7 @@ class CategoryController extends Controller
 
             return response()->json("Categoria adicionada com sucesso!", 200);
         } catch (\Exception $e) {
-            return response()->json("Erro ao adicionar categoria, categoria pode já está cadastrada.", 500);
+            return response()->json("Erro ao adicionar categoria, categoria pode já está cadastrada." . $request->input('name'), 500);
         }
     }
 
@@ -67,9 +67,16 @@ class CategoryController extends Controller
             $description = $request->input('description');
             $icon = $request->input('icon');
 
-            DB::update('update category set name=?, description=?, icon=? WHERE id_category=?', [$name, $description, $icon, $id]);
+            if($icon != null){
+                DB::update('update category set name=?, description=?, icon=? WHERE id_category=?', [$name, $description, $icon, $id]);
 
-            return response()->json("Categoria atualizada com sucesso!", 200);
+                return response()->json("Categoria atualizada com sucesso!", 200);
+            }else{
+                DB::update('update category set name=?, description=? WHERE id_category=?', [$name, $description, $id]);
+
+                return response()->json("Categoria atualizada com sucesso!", 200);
+            }
+            
         } catch (\Exception $e) {
             return response()->json("Error internal serve" . $e, 500);
         }
@@ -82,7 +89,7 @@ class CategoryController extends Controller
 
             return response()->json("Categoria deletada com sucesso!", 200);
         } catch (\Exception $e) {
-            return response()->json("Erro ao deletar categoria.", 500);
+            return response()->json("Erro ao deletar categoria." . $id, 500);
         }
     }
 }
