@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
     public function get()
     {
-        $result = DB::select("SELECT * FROM category");
+        $result = DB::select("SELECT id_category, name, description, color, icon FROM category");
         return response()->json($result);
     }
 
@@ -38,6 +38,16 @@ class CategoryController extends Controller
     public function getByName($name)
     {
         $result = app('db')->select("SELECT * FROM category WHERE name LIKE '%" . $name . "%'");
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("category not folder", 404);
+        }
+    }
+
+    public function getHomeSlide()
+    {
+        $result = app('db')->select("select * from category ORDER BY RAND() limit 3;");
         if ($result != null) {
             return response()->json($result);
         } else {
@@ -76,7 +86,7 @@ class CategoryController extends Controller
 
                 return response()->json("Categoria atualizada com sucesso!", 200);
             }
-            
+
         } catch (\Exception $e) {
             return response()->json("Error internal serve" . $e, 500);
         }

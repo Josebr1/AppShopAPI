@@ -27,6 +27,7 @@ $app->group(['prefix' => 'category'], function () use ($app){
     $app->get('/', 'CategoryController@get');
     $app->get('/{id}', 'CategoryController@getById');
     $app->get('/name/{name}', 'CategoryController@getByName');
+    $app->get('/home/slide', 'CategoryController@getHomeSlide');
     $app->post('/', 'CategoryController@insert');
     $app->post('/update/{id}', 'CategoryController@update');
     $app->delete('/{id}', 'CategoryController@delete');
