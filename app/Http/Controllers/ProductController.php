@@ -48,6 +48,16 @@ class ProductController extends Controller
         }
     }
 
+    public function getHomeProducts()
+    {
+        $result = app('db')->select("select * from product ORDER BY RAND() limit 2;");
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("product not folder", 404);
+        }
+    }
+
     public function insert(Request $request)
     {
         try {

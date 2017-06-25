@@ -38,6 +38,7 @@ $app->group(['prefix' => 'product'], function () use ($app){
     $app->get('/{id}', 'ProductController@getById');
     $app->get('/category/{id}', 'ProductController@getByIdCategory');
     $app->get('/name/{name}', 'ProductController@getByName');
+    $app->get('/home/products', 'ProductController@getHomeProducts');
     $app->post('/', 'ProductController@insert');
     $app->post('/update/{id}', 'ProductController@update');
     $app->delete('/{id}', 'ProductController@delete');
