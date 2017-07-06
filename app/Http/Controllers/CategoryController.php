@@ -15,8 +15,12 @@ class CategoryController extends Controller
 
     public function get()
     {
-        $result = DB::select("SELECT id_category, name, description, color, icon FROM category");
-        return response()->json($result);
+        $result = app('db')->select('select * from category');
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("category folder", 404);
+        }
     }
 
     public function getById($id)

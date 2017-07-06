@@ -5,6 +5,7 @@
  * Date: 5/20/17
  * Time: 5:12 PM
  */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -14,13 +15,17 @@ class OrderController extends Controller
 {
     public function get()
     {
-        $result = DB::select("SELECT * FROM order_user");
+        $result = DB::select("select * from user inner join order_user on 
+                                user.id_user = order_user.user_id order by order_user.date_order DESC");
         return response()->json($result);
     }
 
     public function getById($id)
     {
-        $result = app('db')->select('select * from order_user where id_order = :id', ['id' => $id]);
+        $result = app('db')->select('
+                                select * from user inner join order_user on 
+                                user.id_user = order_user.user_id where 
+                                order_user.id_order = :id order by order_user.date_order DESC', ['id' => $id]);
         if ($result != null) {
             return response()->json($result);
         } else {
@@ -30,7 +35,10 @@ class OrderController extends Controller
 
     public function getAllUsersFormPayment($id)
     {
-        $result = app('db')->select('select * from order_user where form_payment = :id and status = \'Pedido Realizado\' ORDER BY date_order DESC', ['id' => $id]);
+        $result = app('db')->select('select * from user inner join order_user on 
+                                            user.id_user = order_user.user_id where
+                                            order_user.form_payment = :id and order_user.status = \'Pedido Realizado\' ORDER BY 
+                                            order_user.date_order DESC', ['id' => $id]);
         if ($result != null) {
             return response()->json($result);
         } else {
@@ -38,18 +46,11 @@ class OrderController extends Controller
         }
     }
 
-    public function getAllSales($id)
+    public function getAllOrderPlaced()
     {
-        $result = null;
-        if($id == 1){
-            $result = app('db')->select('select * from order_user where status = \'Pedido Realizado\' ORDER BY date_order DESC');
-        }elseif ($id == 2){
-            $result = app('db')->select('select * from order_user where status = \'Pedido Cancelado\' ORDER BY date_order DESC');
-        }elseif ($id == 3){
-            $result = app('db')->select('select * from order_user where status = \'Pedido saiu para entrega\' ORDER BY date_order DESC');
-        }elseif ($id == 4){
-            $result = app('db')->select('select * from order_user where status = \'Pedido Finalizado\' ORDER BY date_order DESC');
-        }
+
+        $result = app('db')->select('select * from user inner join order_user on 
+user.id_user = order_user.user_id where order_user.status = \'Pedido Realizado\' ORDER BY order_user.date_order DESC');
 
         if ($result != null) {
             return response()->json($result);
@@ -57,6 +58,40 @@ class OrderController extends Controller
             return response()->json("order not folder", 404);
         }
     }
+
+    public function getAllCanceledRequest()
+    {
+        $result = app('db')->select('select * from user inner join order_user on 
+user.id_user = order_user.user_id where order_user.status = \'Pedido Cancelado\' ORDER BY order_user.date_order DESC');
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
+    public function getAllOrderLeftForDelivery()
+    {
+        $result = app('db')->select('select * from user inner join order_user on 
+user.id_user = order_user.user_id where order_user.status = \'Pedido saiu para entrega\' ORDER BY order_user.date_order DESC');
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
+    public function getAllOrderCompleted()
+    {
+        $result = app('db')->select('select * from user inner join order_user on 
+user.id_user = order_user.user_id where order_user.status = \'Pedido Finalizado\' ORDER BY order_user.date_order DESC');
+        if ($result != null) {
+            return response()->json($result);
+        } else {
+            return response()->json("order not folder", 404);
+        }
+    }
+
 
     public function getUserTopSales()
     {
@@ -167,12 +202,12 @@ class OrderController extends Controller
         try {
             $status = $request->input('status');
 
-            if($request != null){
+            if ($request != null) {
                 DB::update('update order_user set status=? WHERE id_order=?', [$status, $id]);
 
-                return response()->json("Status atualizada com sucesso!(" . $status  . ')' , 200);
-            }else{
-            return response()->json("Not foud(" . $status  . ')' , 404);
+                return response()->json("Status atualizada com sucesso!(" . $status . ')', 200);
+            } else {
+                return response()->json("Not foud(" . $status . ')', 404);
             }
         } catch (\Exception $e) {
             return response()->json("Error internal serve" . $e, 500);

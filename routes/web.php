@@ -57,7 +57,13 @@ $app->group(['prefix' => 'order'], function () use ($app){
     $app->get('/', 'OrderController@get');
     $app->get('/{id}', 'OrderController@getById');
     $app->get('/products/{id}', 'OrderController@getAllProducts');
-    $app->get('/orders/form/{id}', 'OrderController@getAllUsersFormPayment');
+    $app->get('/orders/form/payment/{id}', 'OrderController@getAllUsersFormPayment');
+
+    $app->get('/orders/status/placed', 'OrderController@getAllOrderPlaced');
+    $app->get('/orders/status/canceled', 'OrderController@getAllCanceledRequest');
+    $app->get('/orders/status/delivery', 'OrderController@getAllOrderLeftForDelivery');
+    $app->get('/orders/status/completed', 'OrderController@getAllOrderCompleted');
+
     $app->get('/orders/status/{id}', 'OrderController@getAllSales');
     $app->get('/user/top/sales', 'OrderController@getUserTopSales');
     $app->get('/sale/month', 'OrderController@getAllMonth');
