@@ -10,128 +10,170 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class OrderController extends Controller
 {
     public function get()
     {
-        $result = DB::select("select * from user inner join order_user on 
+        try {
+            $result = DB::select("select * from user inner join order_user on 
                                 user.id_user = order_user.user_id order by order_user.date_order DESC");
-        return response()->json($result);
+            return response()->json($result);
+        } catch (Exception $e) {
+            return response()->json("Error: " . $e->getMessage(), 500);
+        }
     }
 
     public function getById($id)
     {
-        $result = app('db')->select('
+        try {
+            $result = app('db')->select('
                                 select * from user inner join order_user on 
                                 user.id_user = order_user.user_id where 
                                 order_user.id_order = :id order by order_user.date_order DESC', ['id' => $id]);
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        } catch (Exception $e) {
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getAllUsersFormPayment($id)
     {
-        $result = app('db')->select('select * from user inner join order_user on 
+        try {
+            $result = app('db')->select('select * from user inner join order_user on 
                                             user.id_user = order_user.user_id where
                                             order_user.form_payment = :id and order_user.status = \'Pedido Realizado\' ORDER BY 
                                             order_user.date_order DESC', ['id' => $id]);
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        } catch (Exception $e) {
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getAllOrderPlaced()
     {
-
-        $result = app('db')->select('select * from user inner join order_user on 
+        try {
+            $result = app('db')->select('select * from user inner join order_user on 
 user.id_user = order_user.user_id where order_user.status = \'Pedido Realizado\' ORDER BY order_user.date_order DESC');
 
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        } catch (Exception $e) {
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getAllCanceledRequest()
     {
-        $result = app('db')->select('select * from user inner join order_user on 
+        try{
+            $result = app('db')->select('select * from user inner join order_user on 
 user.id_user = order_user.user_id where order_user.status = \'Pedido Cancelado\' ORDER BY order_user.date_order DESC');
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getAllOrderLeftForDelivery()
     {
-        $result = app('db')->select('select * from user inner join order_user on 
+        try{
+            $result = app('db')->select('select * from user inner join order_user on 
 user.id_user = order_user.user_id where order_user.status = \'Pedido saiu para entrega\' ORDER BY order_user.date_order DESC');
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("Error", 500);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getAllOrderCompleted()
     {
-        $result = app('db')->select('select * from user inner join order_user on 
+        try{
+            $result = app('db')->select('select * from user inner join order_user on 
 user.id_user = order_user.user_id where order_user.status = \'Pedido Finalizado\' ORDER BY order_user.date_order DESC');
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
 
     public function getUserTopSales()
     {
-        $result = app('db')->select('select 
+        try{
+            $result = app('db')->select('select 
                                 COUNT(user.id_user),
                                 user.name,
                                 user.email,
                                 user.phone
                                 from 
                                 user, order_user order by count(user.id_user)');
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getAllMonth()
     {
-        $result = app('db')->select('select count(id_order) as count from order_user where month(date_order) = month(now())');
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+        try{
+            $result = app('db')->select('select count(id_order) as count from order_user where month(date_order) = month(now())');
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
+
     }
 
     public function getAllDay()
     {
-        $result = app('db')->select('select count(id_order) as count from order_user where day(date_order) = day(now())');
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+        try{
+            $result = app('db')->select('select count(id_order) as count from order_user where day(date_order) = day(now())');
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getAllProducts($id)
     {
-        $result = app('db')->select('select 
+        try{
+            $result = app('db')->select('select 
                                     order_items.quantity,
                                     product.name,
                                     product.product_image,
@@ -141,16 +183,20 @@ user.id_user = order_user.user_id where order_user.status = \'Pedido Finalizado\
                                     left join order_user on order_items.order_id = order_user.id_order
                                     inner join product on order_items.product_id = product.id_product 
                                     where order_user.id_order = :id', ['id' => $id]);
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("product not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("product not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getAllProductsOrder($id)
     {
-        $result = DB::select('select 
+        try{
+            $result = DB::select('select 
                                         user.name,
                                         order_user.description_order,
                                         order_user.address, 
@@ -159,10 +205,13 @@ user.id_user = order_user.user_id where order_user.status = \'Pedido Finalizado\
                                         user, order_user where
                                         user.id_user = :idUser and order_user.user_id = :id 
                                         order by date_order desc limit 5', ['idUser' => $id, 'id' => $id]);
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("order not folder", 404);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("order not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 

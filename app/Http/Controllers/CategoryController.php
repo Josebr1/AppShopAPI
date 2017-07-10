@@ -5,31 +5,41 @@
  * Date: 5/20/17
  * Time: 3:04 AM
  */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class CategoryController extends Controller
 {
 
     public function get()
     {
-        $result = app('db')->select('select * from category');
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("category folder", 404);
+        try {
+            $result = app('db')->select('select * from category');
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("category folder", 404);
+            }
+        } catch (Exception $e) {
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getById($id)
     {
-        $result = app('db')->select('select * from category where id_category = :id', ['id' => $id]);
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("user category folder", 404);
+        try {
+            $result = app('db')->select('select * from category where id_category = :id', ['id' => $id]);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("user category folder", 404);
+            }
+        } catch (Exception $e) {
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
@@ -41,21 +51,29 @@ class CategoryController extends Controller
      */
     public function getByName($name)
     {
-        $result = app('db')->select("SELECT * FROM category WHERE name LIKE '%" . $name . "%'");
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("category not folder", 404);
+        try {
+            $result = app('db')->select("SELECT * FROM category WHERE name LIKE '%" . $name . "%'");
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("category not folder", 404);
+            }
+        } catch (Exception $e) {
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getHomeSlide()
     {
-        $result = app('db')->select("select * from category ORDER BY RAND() limit 3;");
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("category not folder", 404);
+        try{
+            $result = app('db')->select("select * from category ORDER BY RAND() limit 3;");
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("category not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
@@ -81,16 +99,15 @@ class CategoryController extends Controller
             $description = $request->input('description');
             $icon = $request->input('icon');
 
-            if($icon != null){
+            if ($icon != null) {
                 DB::update('update category set name=?, description=?, icon=? WHERE id_category=?', [$name, $description, $icon, $id]);
 
                 return response()->json("Categoria atualizada com sucesso!", 200);
-            }else{
+            } else {
                 DB::update('update category set name=?, description=? WHERE id_category=?', [$name, $description, $id]);
 
                 return response()->json("Categoria atualizada com sucesso!", 200);
             }
-
         } catch (\Exception $e) {
             return response()->json("Error internal serve" . $e, 500);
         }

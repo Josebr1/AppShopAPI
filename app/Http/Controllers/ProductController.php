@@ -9,52 +9,73 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class ProductController extends Controller
 {
     public function get()
     {
-        $result = DB::select("SELECT * FROM product");
-        return response()->json($result);
+        try{
+            $result = DB::select("SELECT * FROM product");
+            return response()->json($result);
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
+        }
     }
 
     public function getById($id)
     {
-        $result = app('db')->select('select * from product where id_product = :id', ['id' => $id]);
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("product not folder", 404);
+        try{
+            $result = app('db')->select('select * from product where id_product = :id', ['id' => $id]);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("product not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getByIdCategory($id)
     {
-        $result = app('db')->select('select * from product where id_category = :id', ['id' => $id]);
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("product not folder", 404);
+        try{
+            $result = app('db')->select('select * from product where id_category = :id', ['id' => $id]);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("product not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getByName($name)
     {
-        $result = app('db')->select("SELECT * FROM product WHERE name LIKE '%" . $name . "%'");
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("product not folder", 404);
+        try{
+            $result = app('db')->select("SELECT * FROM product WHERE name LIKE '%" . $name . "%'");
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("product not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 
     public function getHomeProducts()
     {
-        $result = app('db')->select("select * from product ORDER BY RAND() limit 2;");
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("product not folder", 404);
+        try{
+            $result = app('db')->select("select * from product ORDER BY RAND() limit 2;");
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("product not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
     }
 

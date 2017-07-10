@@ -18,7 +18,7 @@ $app->get('/', function () use ($app) {
 $app->group(['prefix' => 'user'], function () use ($app){
     $app->get('/', 'UserController@get');
     $app->get('/{id}', 'UserController@getById');
-    $app->post('/', 'UserController@addUser');
+    $app->post('/', 'UserController@insert');
     $app->put('/{id}', 'UserController@updateUser');
     $app->delete('/{id}', 'UserController@deleteUser');
 });

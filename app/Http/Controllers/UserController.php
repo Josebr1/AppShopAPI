@@ -10,32 +10,43 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class UserController extends Controller
 {
 
     public function get()
     {
-        $result = DB::select("SELECT * FROM user");
-        return response()->json($result);
+        try{
+            $result = DB::select("SELECT * FROM user");
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("user not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
+        }
     }
 
     public function getById($id)
     {
-        $result = app('db')->select('select * from user where id_user = :id', ['id' => $id]);
-        if ($result != null) {
-            return response()->json($result);
-        } else {
-            return response()->json("user not folder", 404);
+        try{
+            $result = app('db')->select('select * from user where id_user = :id', ['id' => $id]);
+            if ($result != null) {
+                return response()->json($result);
+            } else {
+                return response()->json("user not folder", 404);
+            }
+        }catch (Exception $e){
+            return response()->json("Error: " . $e->getMessage(), 500);
         }
-
     }
 
-    public function addUser(Request $request)
+    public function insert(Request $request)
     {
         try {
             $result = $this->getById($request->input('id_user'));
-
             if ($result->status() != 404) {
                 return response()->json('Usuário já cadastrado', 200);
             } else {
@@ -46,7 +57,6 @@ class UserController extends Controller
                 $phone = $request->input('phone');
 
                 $save = DB::insert('insert into user (id_user, name, email, photo_url, phone) values (?, ?, ?, ?, ?)', [$id_user, $name, $email, $photo, $phone]);
-
                 if ($save != null) {
                     return response()->json("Usuário adicionado com sucesso!", 200);
                 } else {
@@ -54,7 +64,7 @@ class UserController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            return response()->json("Error internal serve", 500);
+            return response()->json("Error internal serve" . $e->getMessage(), 500);
         }
     }
 
@@ -94,5 +104,4 @@ class UserController extends Controller
             return response()->json("Error internal serve", 500);
         }
     }
-
 }
