@@ -204,7 +204,7 @@ user.id_user = order_user.user_id where order_user.status = \'Pedido Finalizado\
                                         from 
                                         user, order_user where
                                         user.id_user = :idUser and order_user.user_id = :id 
-                                        order by date_order desc limit 5', ['idUser' => $id, 'id' => $id]);
+                                        order by date_order desc', ['idUser' => $id, 'id' => $id]);
             if ($result != null) {
                 return response()->json($result);
             } else {

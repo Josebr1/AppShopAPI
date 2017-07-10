@@ -68,7 +68,7 @@ class ProductController extends Controller
     public function getHomeProducts()
     {
         try{
-            $result = app('db')->select("select * from product ORDER BY RAND() limit 2;");
+            $result = app('db')->select("select * from product ORDER BY RAND() limit 10;");
             if ($result != null) {
                 return response()->json($result);
             } else {
